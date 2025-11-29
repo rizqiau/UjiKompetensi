@@ -1,0 +1,32 @@
+{
+  "books": [
+    {
+      "id": 1764402779831,
+      "title": "tes",
+      "author": "tes",
+      "year": 2025,
+      "isAvailable": true
+    },
+    {
+      "id": 1764402793681,
+      "title": "tes1",
+      "author": "tes1",
+      "year": 1999,
+      "isAvailable": true
+    },
+    {
+      "id": 1764402803589,
+      "title": "buku",
+      "author": "buku",
+      "year": 1995,
+      "isAvailable": true
+    },
+    {
+      "id": 1764403578611,
+      "title": "tes",
+      "author": "tes",
+      "year": 2025,
+      "isAvailable": true
+    }
+  ]
+}
