@@ -60,6 +60,7 @@ app.post("/api/books", (req, res) => {
     author: author,
     year: Number(year) || new Date().getFullYear(),
     isAvailable: typeof isAvailable === "boolean" ? isAvailable : true,
+    borrower: borrower || null,
   };
 
   db.books.push(newBook); // Array
@@ -87,6 +88,10 @@ app.put("/api/books/:id", (req, res) => {
     ...books[index],
     ...req.body,
     year: Number(req.body.year || books[index].year),
+    borrower:
+      typeof req.body.borrower === "undefined"
+        ? books[index].borrower
+        : req.body.borrower,
   };
 
   books[index] = updatedBook;

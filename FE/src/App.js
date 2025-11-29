@@ -28,7 +28,8 @@ function App() {
             item.title,
             item.author,
             item.year,
-            item.isAvailable
+            item.isAvailable,
+            item.borrower || null
           )
       );
       setBooks(bookObjects);
@@ -93,6 +94,77 @@ function App() {
     }
   }
 
+  function handleBorrow(book) {
+    // minta nama peminjam
+    const borrower = window.prompt(
+      "Masukkan nama peminjam:",
+      book.borrower || ""
+    );
+    if (!borrower) {
+      return; // batal kalau kosong / cancel
+    }
+
+    const updatedBook = new Book(
+      book.getId(),
+      book.title,
+      book.author,
+      book.year,
+      false, // sekarang tidak tersedia
+      borrower
+    );
+
+    updateBook(updatedBook.getId(), {
+      title: updatedBook.title,
+      author: updatedBook.author,
+      year: updatedBook.year,
+      isAvailable: updatedBook.isAvailable,
+      borrower: updatedBook.borrower,
+    }).then((saved) => {
+      const savedBook = new Book(
+        saved.id,
+        saved.title,
+        saved.author,
+        saved.year,
+        saved.isAvailable,
+        saved.borrower || null
+      );
+      setBooks((prev) =>
+        prev.map((b) => (b.getId() === savedBook.getId() ? savedBook : b))
+      );
+    });
+  }
+
+  function handleReturn(book) {
+    const updatedBook = new Book(
+      book.getId(),
+      book.title,
+      book.author,
+      book.year,
+      true, // tersedia lagi
+      null // peminjam direset
+    );
+
+    updateBook(updatedBook.getId(), {
+      title: updatedBook.title,
+      author: updatedBook.author,
+      year: updatedBook.year,
+      isAvailable: updatedBook.isAvailable,
+      borrower: updatedBook.borrower,
+    }).then((saved) => {
+      const savedBook = new Book(
+        saved.id,
+        saved.title,
+        saved.author,
+        saved.year,
+        saved.isAvailable,
+        saved.borrower || null
+      );
+      setBooks((prev) =>
+        prev.map((b) => (b.getId() === savedBook.getId() ? savedBook : b))
+      );
+    });
+  }
+
   function handleDelete(id) {
     if (!window.confirm("Yakin ingin menghapus buku ini?")) return;
 
@@ -130,6 +202,8 @@ function App() {
         books={filteredBooks}
         onEdit={(book) => setEditingBook(book)}
         onDelete={handleDelete}
+        onBorrow={handleBorrow}
+        onReturn={handleReturn}
       />
 
       <div className="mt-3">
@@ -137,14 +211,6 @@ function App() {
           Jumlah buku sebelum tahun 2000:{" "}
           <strong>{countOldBooks(books)}</strong>
         </p>
-
-        {firstUnavailable && (
-          <p>
-            Contoh polymorphism: method <code>getDisplayText()</code> dari
-            instance <code>Book</code> (turunan <code>Item</code>):{" "}
-            <strong>{firstUnavailable.getDisplayText()}</strong>
-          </p>
-        )}
       </div>
     </div>
   );

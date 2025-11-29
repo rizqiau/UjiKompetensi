@@ -14,11 +14,12 @@ import Item from "./Item";
  *   dengan parameter atau tanpa parameter.
  */
 class Book extends Item {
-  constructor(id, title, author, year, isAvailable) {
+  constructor(id, title, author, year, isAvailable, borrower = null) {
     super(id, title); // panggil constructor Item
     this.author = author;
     this.year = year;
     this.isAvailable = isAvailable;
+    this.borrower = borrower;
   }
 
   // override method dari Item → polymorphism
